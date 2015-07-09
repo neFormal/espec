@@ -37,3 +37,19 @@
                   ]})
         end
     end)())).
+
+-define(assertInList(Expected, Expr),
+  ((fun (__Expected) ->
+          case (lists:member(__Expected, Expr)) of
+            true ->
+              ok;
+            __Value ->
+              erlang:error({assertEqual_failed,
+                  [
+                      {line, ?LINE},
+                      {expression, (??Expr)},
+                      {expected, __Expected},
+                      {got, __Value}
+                  ]})
+        end
+    end)(Expected))).
