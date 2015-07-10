@@ -5,7 +5,7 @@
 -record(state, {color = false, indentation = 0}).
 
 new() ->
-  Color = not is_running_in_shell(),
+  Color = is_running_in_shell(),
   #state{color = Color}.
 
 start_spec(Name, #state{indentation = Indentation} = State) ->
@@ -91,9 +91,4 @@ yellow() ->
 is_running_in_shell() ->
   ProcessInfo = process_info(self()),
   RootPid = list_to_pid("<0.0.0>"),
-  case proplists:get_value(links, ProcessInfo) of
-    [RootPid] ->
-      false;
-    _ ->
-      true
-  end.
+  lists:member(RootPid, proplists:get_value(links, ProcessInfo)).
